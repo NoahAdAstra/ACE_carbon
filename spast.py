@@ -13,9 +13,9 @@ import os
 ###
 
 ######################################################################################################################
-E_11 = 135369.47
-E_22 = 10413.04
-G_12 = 5206.52
+E_11 = 135369.47 * 0.9
+E_22 = 10413.04 * 0.9
+G_12 = 5206.52 * 0.9
 
 v_12 = 0.33
 v_21 = (v_12 * E_22)/E_11
@@ -24,8 +24,13 @@ a_width = 600 #m
 b_length = 400 #m
 t_thikness = 1.104*8
 
-m_mave = 2
+m_wave = 2
 n_wave = 1
+
+
+filename_strength_panels_x = 'X_Ply'
+filename_strength_panels_y = 'Y_Ply'
+filename_strength_panels_xy = 'XY_Ply'
 
 filename_stability_panels = 'stability_panels'
 ######################################################################################################################
@@ -67,17 +72,26 @@ Q_ply_1 = Q_strich(45)
 #ply height 1.104
 Z_hoehe = [-4.416,-3.312,-2.208,-1.104,0,1.104,2.208,3.312,4.416]
 
-A_matrix = [[637213.62,243398.79,69558.64],
-            [243398.79,915448.17,69558.64],
-            [69558.64,69558.64,266466.05]]
+A_matrix_panel = [[517553.93, 162265.86, 0.00],
+                  [162265.86, 517553.93, 0.00],
+                  [0.00,	0.00,	177644.03]]
 
-B_matrix = [[0,0,0],[0,0,0],[0,0,0]]
+B_matrix_panel = [[0,0,0],[0,0,0],[0,0,0]]
 
-D_matrix = [[9809831.65,5726236.70,3249868.55],
-            [5726236.70,8566403.68,3249868.55],
-            [3249868.55,3249868.55,6063613.62]]
+D_matrix_panel = [[3061521.95, 1696662.73, 508675.08],
+                  [1696662.73, 2383288.51, 508675.08],
+                  [508675.08, 508675.08, 1796626.26]]
 
 
+A_matrix_stringer = [[172517.98,54088.62,0.00],
+                     [54088.62,172517.98,0.00],
+                     [0.00,0.00,59214.68]]
+
+B_matrix_stringer = [[0,0,0],[0,0,0],[0,0,0]]
+
+D_matrix_stringer = [[113389.70,62839.36,18839.82],
+                     [62839.36, 88269.94, 18839.82],
+                     [18839.82, 18839.82, 66541.71]]
 
 
 #___setting up the databank___
@@ -100,6 +114,14 @@ for i in range (1,4):
         maindir_panel_stability [f'LC{i}'] [f'Panel{j}'] = {}
 
 
+maindir_panel_strength = {}
+maindir_panel_strength ['LC1'] = LC1dir
+maindir_panel_strength ['LC2'] = LC2dir
+maindir_panel_strength ['LC3'] = LC3dir
+
+for i in range (1,4):
+    for j in range (1,9):
+        maindir_panel_strength [f'LC{i}'] = {}
 
 #___get values for stabiliy___
 file_path = os.path.join(femdir, f'{filename_stability_panels}.xlsx')
@@ -121,6 +143,69 @@ for LoadCases in maindir_panel_stability:
             maindir_panel_stability [LoadCases] [f'Panel{i}'] [f'Element{j+1}'] = id
 
 
+#__get values for panel strength___
+#___ply X___
+file_path = os.path.join(femdir, f'{filename_strength_panels_x}.xlsx')
+wb = load_workbook(file_path)
+ws = wb[filename_strength_panels_x]
+
+
+column = 6
+row = -228
+for LoadCases in maindir_panel_strength:
+    row += 240
+    for j in range(0,8): 
+        id = {}
+        id ['sigma_x'] = ws.cell(row=row+j*30,column=column).value
+        maindir_panel_strength [LoadCases] [f'Ply{j+1}'] = id
+
+
+#___ply Y___         
+file_path = os.path.join(femdir, f'{filename_strength_panels_y}.xlsx')
+wb = load_workbook(file_path)
+ws = wb[filename_strength_panels_y]
+
+column = 6
+row = -228
+for LoadCases in maindir_panel_strength:
+    row += 240
+    for j in range(0,8): 
+        hey = ws.cell(row=row+j*30,column=column).value
+        maindir_panel_strength [LoadCases] [f'Ply{j+1}'].update({'sigma_y': hey})
+
+#___ply XY___         
+file_path = os.path.join(femdir, f'{filename_strength_panels_xy}.xlsx')
+wb = load_workbook(file_path)
+ws = wb[filename_strength_panels_xy]
+
+column = 6
+row = -228
+for LoadCases in maindir_panel_strength:
+    row += 240
+    for j in range(0,8): 
+        hey = ws.cell(row=row+j*30,column=column).value
+        maindir_panel_strength [LoadCases] [f'Ply{j+1}'].update({'sigma_xy': hey})
+
+for elements in cases:
+    value = 0
+    for i in range (1,6):
+        row += 6
+        for j in range(0,6):
+            value += 1
+            same = str(value)
+            id = {}
+            id ['start_value'] =  ws.cell(row=row+j,column=column).value
+            maindir [f'{elements}'] [f'XX {elements}'] [f'panel{i}'] [same]= id
+            id = {}
+            id ['start_value'] =  ws.cell(row=row+j,column=column+1).value
+            maindir [f'{elements}'] [f'XY {elements}'] [f'panel{i}'] [same] = id
+            id = {}
+            id ['start_value'] =  ws.cell(row=row+j,column=column+2).value
+            maindir [f'{elements}'] [f'YY {elements}'] [f'panel{i}'] [same] = id
+            id = {}
+            id ['start_value'] =  ws.cell(row=row+j,column=column+3).value
+            maindir [f'{elements}'] [f'vonMieses {elements}'] [f'panel{i}'] [same] = id
+
 #___averaged values panels___
 for LoadCases in maindir_panel_stability:
     for Panels in maindir_panel_stability[LoadCases]:
@@ -138,7 +223,7 @@ for LoadCases in maindir_panel_stability:
         maindir_panel_stability[LoadCases] [Panels] ['average_xy'] = xy/6
         maindir_panel_stability[LoadCases] [Panels] ['average_yy'] = yy/6
 
-#___biax crit___
+'''#___RF biax___
 for LoadCases in maindir_panel_stability:
     for Panels in maindir_panel_stability[LoadCases]:
         sigma_x = maindir_panel_stability[LoadCases] [Panels] ['average_xx']
@@ -148,18 +233,25 @@ for LoadCases in maindir_panel_stability:
         beta = sigma_y/sigma_x
         alpha = a_width/b_length
 
-        sigma_crit_biax = (np.pi**2/((b_length**2)*t_thikness))*(1/(((m_mave/alpha)**2)+(beta*(n_wave**2))))*(D_matrix[0][0] * ((m_wave/alpha)**4) + 2*(D_matrix[0][1]+D_matrix[2][2])*(((m_wave*n_wave)/alpha)**2) + (D_matrix[1][1] * (n_wave**4)))
+        sigma_crit_biax = (np.pi**2/((b_length**2)*t_thikness))*(1/(((m_mave/alpha)**2)+(beta*(n_wave**2))))*(D_matrix_panel[0][0] * ((m_wave/alpha)**4) + 2*(D_matrix_panel[0][1]+D_matrix_panel[2][2])*(((m_wave*n_wave)/alpha)**2) + (D_matrix_panel[1][1] * (n_wave**4)))
         maindir_panel_stability[LoadCases] [Panels] ['sigma_crit_biax'] = sigma_crit_biax
         RF_biax = sigma_crit_biax/sigma_x
 
-        epsilon = ((D_matrix[0][0]*D_matrix[1][1])**0.5)/(D_matrix[0][1]+2*D_matrix[2][2])
+        epsilon = ((D_matrix_panel[0][0]*D_matrix_panel[1][1])**0.5)/(D_matrix_panel[0][1]+2*D_matrix_panel[2][2])
         if epsilon >= 1:
-            tau_crit_biax = (4/(t_thikness*(b_length**2)))*(((D_matrix[0][0]*(D_matrix[1][1]**3))**0.25)*(8.12+(5.05/epsilon)))
+            tau_crit_biax = (4/(t_thikness*(b_length**2)))*(((D_matrix_panel[0][0]*(D_matrix_panel[1][1]**3))**0.25)*(8.12+(5.05/epsilon)))
         if epsilon < 1:
-            tau_crit_biax = (4/(t_thikness*(b_length**2)))*(((D_matrix[1][1]*(D_matrix[0][1]+2*D_matrix[2][2]))**0.5)*(11.7+(0.532*epsilon)+(0.938*(epsilon**2))))
+            tau_crit_biax = (4/(t_thikness*(b_length**2)))*(((D_matrix_panel[1][1]*(D_matrix_panel[0][1]+2*D_matrix_panel[2][2]))**0.5)*(11.7+(0.532*epsilon)+(0.938*(epsilon**2))))
         maindir_panel_stability[LoadCases] [Panels] ['tau_crit_biax'] = tau_crit_biax
         RF_shear = tau_crit_biax/tau_xy
         RF_comb = 1/((1/RF_biax)+(1/RF_shear)**2)
         maindir_panel_stability[LoadCases] [Panels] ['RF_panel_buckel'] = RF_comb
+'''
+#___homogonize___
+
+E_homo = A_matrix_stringer[0][0]/2.944
+G_homo = A_matrix_stringer[2][2]/2.944
+
+
 
 print ('hey')
