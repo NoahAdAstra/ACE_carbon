@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 import numpy as np
 import os
 import starting_values as val
-import panel_strength 
+
 
 ### 
 '''  knockdown values !!!!!!!!!!!!  '''
@@ -66,6 +66,7 @@ os.chdir("../..")
 badir =  os. getcwd()  
 os.chdir("03_FemResults")
 femdir = os.getcwd()
+import panel_strength 
 
 cases = ['LC1','LC2','LC3',]
 LC1dir ={}
