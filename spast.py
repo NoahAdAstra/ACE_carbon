@@ -2,6 +2,7 @@ from openpyxl import load_workbook
 import numpy as np
 import os
 import starting_values as val
+import panel_strength 
 
 ### 
 '''  knockdown values !!!!!!!!!!!!  '''
@@ -57,15 +58,7 @@ D_matrix_panel = [[3061521.95, 1696662.73, 508675.08],
                   [508675.08, 508675.08, 1796626.26]]
 
 
-A_matrix_stringer = [[172517.98,54088.62,0.00],
-                     [54088.62,172517.98,0.00],
-                     [0.00,0.00,59214.68]]
 
-B_matrix_stringer = [[0,0,0],[0,0,0],[0,0,0]]
-
-D_matrix_stringer = [[113389.70,62839.36,18839.82],
-                     [62839.36, 88269.94, 18839.82],
-                     [18839.82, 18839.82, 66541.71]]
 
 
 #___setting up the databank___
@@ -87,9 +80,6 @@ for i in range (1,4):
     for j in range (1,6):
         maindir_panel_stability [f'LC{i}'] [f'Panel{j}'] = {}
 
-
-
-
 #___get values for stabiliy___
 file_path = os.path.join(femdir, f'{val.filename_stability_panels}.xlsx')
 wb = load_workbook(file_path)
@@ -110,8 +100,6 @@ for LoadCases in maindir_panel_stability:
             maindir_panel_stability [LoadCases] [f'Panel{i}'] [f'Element{j+1}'] = id
 
 
-
-
 #___averaged values panels___
 for LoadCases in maindir_panel_stability:
     for Panels in maindir_panel_stability[LoadCases]:
@@ -128,6 +116,8 @@ for LoadCases in maindir_panel_stability:
         maindir_panel_stability[LoadCases] [Panels] ['average_xx'] = xx/6
         maindir_panel_stability[LoadCases] [Panels] ['average_xy'] = xy/6
         maindir_panel_stability[LoadCases] [Panels] ['average_yy'] = yy/6
+
+hello = panel_strength.result
 
 '''#___RF biax___
 for LoadCases in maindir_panel_stability:
