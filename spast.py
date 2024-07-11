@@ -4,9 +4,6 @@ import os
 import starting_values as val
 
 
-### 
-'''  knockdown values !!!!!!!!!!!!  '''
-###
 
 
 
@@ -79,18 +76,11 @@ femdir = os.getcwd()
 
 import panel_strength 
 
-cases = ['LC1','LC2','LC3',]
-LC1dir ={}
-LC2dir ={}
-LC3dir ={}
-maindir_panel_stability= {}
-maindir_panel_stability ['LC1'] = LC1dir
-maindir_panel_stability ['LC2'] = LC2dir
-maindir_panel_stability ['LC3'] = LC3dir
-
+maindir_panel_stability= {} 
 for i in range (1,4):
+    maindir_panel_stability.update({f'LC{i}':{}})
     for j in range (1,6):
-        maindir_panel_stability [f'LC{i}'] [f'Panel{j}'] = {}
+        maindir_panel_stability [f'LC{i}'].update({f'Panel{j}':{}}) 
 
 #___get values for stabiliy___
 file_path = os.path.join(femdir, f'{val.filename_stability_panels}.xlsx')
@@ -129,7 +119,6 @@ for LoadCases in maindir_panel_stability:
         maindir_panel_stability[LoadCases] [Panels] ['average_xy'] = xy/6
         maindir_panel_stability[LoadCases] [Panels] ['average_yy'] = yy/6
 
-hello = panel_strength.result
 
 #___RF biax___
 for LoadCases in maindir_panel_stability:
