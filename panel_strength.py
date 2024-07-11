@@ -20,7 +20,9 @@ D_matrix_stringer = [[113389.70,62839.36,18839.82],
 
 
 #___setting up the data base__
-os.chdir('../../03_FemResults')
+if __name__ == '__main__': 
+    os.chdir('../../03_FemResults')
+    
 femdir = os.getcwd()
 print(os.getcwd())
 
@@ -83,7 +85,6 @@ for LoadCases in maindir_panel_strength:
         maindir_panel_strength [LoadCases] [f'Ply{j+1}'].update({'tau': hey})
 
 #___FF RF___
-
 for LoadCases in maindir_panel_strength:
     for Ply in maindir_panel_strength[LoadCases]: 
         sigma_x = maindir_panel_strength[LoadCases][Ply]['sigma_x']
@@ -103,13 +104,30 @@ for LoadCases in maindir_panel_strength:
         tau = maindir_panel_strength[LoadCases][Ply]['tau']
         if sigma_y >= 0:
             maindir_panel_strength[LoadCases][Ply].update({'mode':'A'})
-            (((tau/val.R_shear)**2)+((1-val.p_weird*())**2))
+            RF_IFF = 1/(((((tau/val.R_shear)**2)+(((1-val.p_weird*(val.R_perpendicular_t/val.R_shear))**2)*((sigma_y/val.R_perpendicular_t)**2)))**0.5) + (val.p_weird*(sigma_y/val.R_shear)))
+
         if sigma_y < 0 and abs(sigma_y/tau) <= (R_paralel_A/abs(tau_C)):
             maindir_panel_strength[LoadCases][Ply].update({'mode':'B'})
+            RF_IFF = 1/((1/val.R_shear)*((((tau**2) + ((val.p_weird*sigma_y)**2))**2) + val.p_weird*sigma_y))
+
 
         if sigma_y < 0 and abs(tau/sigma_y) <= (abs(tau_C)/R_paralel_A):
             maindir_panel_strength[LoadCases][Ply].update({'mode':'C'})
- print()
+            RF_IFF = 1/((((tau/(2*(1+val.p_weird)*val.R_shear))**2)+((sigma_y/val.R_perpendicular_c)**2))*(val.R_perpendicular_c/-sigma_y))
+        
+        maindir_panel_strength[LoadCases][Ply].update({'RF_IFF':RF_IFF})
+        
+for LoadCases in maindir_panel_strength:
+    for Ply in maindir_panel_strength[LoadCases]:  
+        RF_FF = maindir_panel_strength[LoadCases][Ply]['RF_FF']
+        RF_IFF = maindir_panel_strength[LoadCases][Ply]['RF_IFF']
+
+        if RF_FF < RF_IFF: RF_comb = RF_FF
+        else: RF_comb = RF_IFF
+        maindir_panel_strength[LoadCases][Ply].update({'RF_comb':RF_comb})
+
+        
+print()
 
 
 
