@@ -4,25 +4,10 @@ import os
 import starting_values as val
 
 
-#########################################################################################
-A_matrix_stringer = [[172517.98,54088.62,0.00],
-                     [54088.62,172517.98,0.00],
-                     [0.00,0.00,59214.68]]
-
-B_matrix_stringer = [[0,0,0],[0,0,0],[0,0,0]]
-
-D_matrix_stringer = [[113389.70,62839.36,18839.82],
-                     [62839.36, 88269.94, 18839.82],
-                     [18839.82, 18839.82, 66541.71]]
-###########################################################################################
-
-
-
-
 #___setting up the data base__
 if __name__ == '__main__': 
     os.chdir('../../03_FemResults')
-    
+
 femdir = os.getcwd()
 print(os.getcwd())
 
@@ -116,7 +101,8 @@ for LoadCases in maindir_panel_strength:
             RF_IFF = 1/((((tau/(2*(1+val.p_weird)*val.R_shear))**2)+((sigma_y/val.R_perpendicular_c)**2))*(val.R_perpendicular_c/-sigma_y))
         
         maindir_panel_strength[LoadCases][Ply].update({'RF_IFF':RF_IFF})
-        
+
+#___comb RF___        
 for LoadCases in maindir_panel_strength:
     for Ply in maindir_panel_strength[LoadCases]:  
         RF_FF = maindir_panel_strength[LoadCases][Ply]['RF_FF']

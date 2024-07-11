@@ -58,7 +58,17 @@ D_matrix_panel = [[3061521.95, 1696662.73, 508675.08],
                   [508675.08, 508675.08, 1796626.26]]
 
 
+#########################################################################################
+A_matrix_stringer = [[172517.98,54088.62,0.00],
+                     [54088.62,172517.98,0.00],
+                     [0.00,0.00,59214.68]]
 
+B_matrix_stringer = [[0,0,0],[0,0,0],[0,0,0]]
+
+D_matrix_stringer = [[113389.70,62839.36,18839.82],
+                     [62839.36, 88269.94, 18839.82],
+                     [18839.82, 18839.82, 66541.71]]
+###########################################################################################
 
 
 #___setting up the databank___
@@ -121,7 +131,7 @@ for LoadCases in maindir_panel_stability:
 
 hello = panel_strength.result
 
-'''#___RF biax___
+#___RF biax___
 for LoadCases in maindir_panel_stability:
     for Panels in maindir_panel_stability[LoadCases]:
         sigma_x = maindir_panel_stability[LoadCases] [Panels] ['average_xx']
@@ -144,7 +154,7 @@ for LoadCases in maindir_panel_stability:
         RF_shear = tau_crit_biax/tau_xy
         RF_comb = 1/((1/RF_biax)+(1/RF_shear)**2)
         maindir_panel_stability[LoadCases] [Panels] ['RF_panel_buckel'] = RF_comb
-'''
+
 #___homogonize___
 
 E_homo = A_matrix_stringer[0][0]/2.944
