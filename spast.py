@@ -74,7 +74,7 @@ badir =  os. getcwd()
 os.chdir("03_FemResults")
 femdir = os.getcwd()
 
-import panel_strength 
+#import panel_strength 
 
 maindir_panel_stability= {} 
 for i in range (1,4):
@@ -132,7 +132,7 @@ for LoadCases in maindir_panel_stability:
 
         sigma_crit_biax = (np.pi**2/((val.b_length**2)*val.t_thikness))*(1/(((val.m_mave/alpha)**2)+(beta*(val.n_wave**2))))*(D_matrix_panel[0][0] * ((val.m_wave/alpha)**4) + 2*(D_matrix_panel[0][1]+D_matrix_panel[2][2])*(((val.m_wave*val.n_wave)/alpha)**2) + (D_matrix_panel[1][1] * (val.n_wave**4)))
         maindir_panel_stability[LoadCases] [Panels] ['sigma_crit_biax'] = sigma_crit_biax
-        RF_biax = sigma_crit_biax/sigma_x
+        RF_biax = sigma_crit_biax/(1.5*sigma_x)
 
         epsilon = ((D_matrix_panel[0][0]*D_matrix_panel[1][1])**0.5)/(D_matrix_panel[0][1]+2*D_matrix_panel[2][2])
         if epsilon >= 1:
@@ -140,7 +140,7 @@ for LoadCases in maindir_panel_stability:
         if epsilon < 1:
             tau_crit_biax = (4/(val.t_thikness*(val.b_length**2)))*(((D_matrix_panel[1][1]*(D_matrix_panel[0][1]+2*D_matrix_panel[2][2]))**0.5)*(11.7+(0.532*epsilon)+(0.938*(epsilon**2))))
         maindir_panel_stability[LoadCases] [Panels] ['tau_crit_biax'] = tau_crit_biax
-        RF_shear = tau_crit_biax/tau_xy
+        RF_shear = tau_crit_biax/ (1.5*tau_xy)
         RF_comb = 1/((1/RF_biax)+(1/RF_shear)**2)
         maindir_panel_stability[LoadCases] [Panels] ['RF_panel_buckel'] = RF_comb
 

@@ -3,7 +3,7 @@ import numpy as np
 import os
 import starting_values as val
 
-
+ 
 #___setting up the data base__
 if __name__ == '__main__': 
     os.chdir('../../03_FemResults')
