@@ -11,20 +11,12 @@ if __name__ == '__main__':
 femdir = os.getcwd()
 print(os.getcwd())
 
-cases = ['LC1','LC2','LC3',]
-LC1dir ={}
-LC2dir ={}
-LC3dir ={}
 
-maindir_panel_strength = {}
-maindir_panel_strength ['LC1'] = LC1dir
-maindir_panel_strength ['LC2'] = LC2dir
-maindir_panel_strength ['LC3'] = LC3dir
-
+maindir_panel_strength= {} 
 for i in range (1,4):
+    maindir_panel_strength.update({f'LC{i}':{}})
     for j in range (1,9):
-        maindir_panel_strength [f'LC{i}'] = {}
-
+        maindir_panel_strength [f'LC{i}'].update({f'Ply{j}':{}}) 
 
 #__get values for panel strength___
 #___ply X___
