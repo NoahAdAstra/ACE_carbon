@@ -100,8 +100,11 @@ for LoadCases in maindir_panel_strength:
         RF_FF = maindir_panel_strength[LoadCases][Ply]['RF_FF']
         RF_IFF = maindir_panel_strength[LoadCases][Ply]['RF_IFF']
 
-        if RF_FF < RF_IFF: RF_comb = RF_FF
-        else: RF_comb = RF_IFF
+        if RF_FF < RF_IFF: 
+            RF_comb = RF_FF
+            maindir_panel_strength[LoadCases][Ply].update({'mode':'FF'})
+        else: 
+            RF_comb = RF_IFF
         maindir_panel_strength[LoadCases][Ply].update({'RF_comb':RF_comb})
 
         

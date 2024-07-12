@@ -28,6 +28,7 @@ sigma_ult = 650 #MPa
 m_wave = 2
 n_wave = 1
 
+result_file = 'result_2_1'
 
 filename_strength_panels_x = 'X_Ply'
 filename_strength_panels_y = 'Y_Ply'

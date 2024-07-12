@@ -18,7 +18,7 @@ D_matrix_stringer = [[113389.70,62839.36,18839.82],
 
 
 A_matrix_invers = np.linalg.inv(A_matrix_stringer) 
-B_matrix_invers = np.linalg.inv(B_matrix_stringer) 
+#B_matrix_invers = np.linalg.inv(B_matrix_stringer) 
 D_matrix_invers = np.linalg.inv(D_matrix_stringer) 
 ###########################################################################################
 
@@ -28,7 +28,6 @@ if __name__ == '__main__':
     os.chdir('../../03_FemResults')
 
 femdir = os.getcwd()
-print(os.getcwd())
 
 
 maindir_stringer_stability= {} 
@@ -133,3 +132,4 @@ for LoadCases in maindir_stringer_stability:
 
 
 
+print('pups')

@@ -55,26 +55,14 @@ D_matrix_panel = [[3061521.95, 1696662.73, 508675.08],
                   [508675.08, 508675.08, 1796626.26]]
 
 
-#########################################################################################
-A_matrix_stringer = [[172517.98,54088.62,0.00],
-                     [54088.62,172517.98,0.00],
-                     [0.00,0.00,59214.68]]
-
-B_matrix_stringer = [[0,0,0],[0,0,0],[0,0,0]]
-
-D_matrix_stringer = [[113389.70,62839.36,18839.82],
-                     [62839.36, 88269.94, 18839.82],
-                     [18839.82, 18839.82, 66541.71]]
-###########################################################################################
 
 
 #___setting up the databank___
-os.chdir("../..")
-badir =  os. getcwd()  
-os.chdir("03_FemResults")
+if __name__ == '__main__': 
+    os.chdir('../../03_FemResults')
+    
 femdir = os.getcwd()
 
-#import panel_strength 
 
 maindir_panel_stability= {} 
 for i in range (1,4):
@@ -130,9 +118,9 @@ for LoadCases in maindir_panel_stability:
         beta = sigma_y/sigma_x
         alpha = val.a_width/val.b_length
 
-        sigma_crit_biax = (np.pi**2/((val.b_length**2)*val.t_thikness))*(1/(((val.m_mave/alpha)**2)+(beta*(val.n_wave**2))))*(D_matrix_panel[0][0] * ((val.m_wave/alpha)**4) + 2*(D_matrix_panel[0][1]+D_matrix_panel[2][2])*(((val.m_wave*val.n_wave)/alpha)**2) + (D_matrix_panel[1][1] * (val.n_wave**4)))
+        sigma_crit_biax = (np.pi**2/((val.b_length**2)*val.t_thikness))*(1/(((val.m_wave/alpha)**2)+(beta*(val.n_wave**2))))*(D_matrix_panel[0][0] * ((val.m_wave/alpha)**4) + 2*(D_matrix_panel[0][1]+D_matrix_panel[2][2])*(((val.m_wave*val.n_wave)/alpha)**2) + (D_matrix_panel[1][1] * (val.n_wave**4)))
         maindir_panel_stability[LoadCases] [Panels] ['sigma_crit_biax'] = sigma_crit_biax
-        RF_biax = sigma_crit_biax/(1.5*sigma_x)
+        RF_biax = abs(sigma_crit_biax/(1.5*sigma_x))
 
         epsilon = ((D_matrix_panel[0][0]*D_matrix_panel[1][1])**0.5)/(D_matrix_panel[0][1]+2*D_matrix_panel[2][2])
         if epsilon >= 1:
@@ -140,15 +128,14 @@ for LoadCases in maindir_panel_stability:
         if epsilon < 1:
             tau_crit_biax = (4/(val.t_thikness*(val.b_length**2)))*(((D_matrix_panel[1][1]*(D_matrix_panel[0][1]+2*D_matrix_panel[2][2]))**0.5)*(11.7+(0.532*epsilon)+(0.938*(epsilon**2))))
         maindir_panel_stability[LoadCases] [Panels] ['tau_crit_biax'] = tau_crit_biax
-        RF_shear = tau_crit_biax/ (1.5*tau_xy)
+        RF_shear = abs(tau_crit_biax/ (1.5*tau_xy))
         RF_comb = 1/((1/RF_biax)+(1/RF_shear)**2)
         maindir_panel_stability[LoadCases] [Panels] ['RF_panel_buckel'] = RF_comb
 
 #___homogonize___
 
-E_homo = A_matrix_stringer[0][0]/2.944
-G_homo = A_matrix_stringer[2][2]/2.944
+'''E_homo = A_matrix_stringer[0][0]/2.944
+G_homo = A_matrix_stringer[2][2]/2.944'''
 
 
-
-print ('hey')
+print('hey')
