@@ -129,6 +129,9 @@ for LoadCases in maindir_stringer_stability:
     for Stringer,specific_stringer in maindir_stringer_stability[LoadCases].items(): 
         RF_stringer_comb =abs(sigma_buckel_crit/(1.5 * specific_stringer['sigma_tot']))
         specific_stringer.update({'RF_stringer_comb':RF_stringer_comb})
+        specific_stringer.update({'lambda':lambda_euler})
+        specific_stringer.update({'lambda_crit':lambda_crit})
+        specific_stringer.update({'radius':radius_of_gyr})
 
 
 

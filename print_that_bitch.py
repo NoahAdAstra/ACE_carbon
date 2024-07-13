@@ -9,9 +9,11 @@ femdir = os.getcwd()
 import spast as pa_sta
 import stringer_stability as st_sta
 import panel_strength as pa_str
+import stringer_strength as st_str
 import starting_values as val
 
 maindir_stringer_stability = st_sta.maindir_stringer_stability
+maindir_stringer_strength = st_str.maindir_stringer_strength
 maindir_panel_stability = pa_sta.maindir_panel_stability
 maindir_panel_strength = pa_str.maindir_panel_strength
 
@@ -54,6 +56,18 @@ for LoadCases in  maindir_panel_strength:
         ws.cell(row=row ,column=column+1).value = SpecificPanel['RF_IFF']
         ws.cell(row=row ,column=column+2).value = SpecificPanel['mode']
         ws.cell(row=row ,column=column+3).value = SpecificPanel['RF_comb']
+        row += 1
+
+
+column = -4
+for LoadCases in  maindir_stringer_strength:
+    row=40
+    column += 6
+    for Panels,SpecificStringer in maindir_stringer_strength[LoadCases].items():
+        ws.cell(row=row ,column=column).value = SpecificStringer['RF_FF']
+        ws.cell(row=row ,column=column+1).value = SpecificStringer['RF_IFF']
+        ws.cell(row=row ,column=column+2).value = SpecificStringer['mode']
+        ws.cell(row=row ,column=column+3).value = SpecificStringer['RF_comb']
         row += 1
 
 

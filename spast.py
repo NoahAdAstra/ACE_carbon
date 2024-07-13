@@ -134,8 +134,7 @@ for LoadCases in maindir_panel_stability:
 
 #___homogonize___
 
-'''E_homo = A_matrix_stringer[0][0]/2.944
-G_homo = A_matrix_stringer[2][2]/2.944'''
+
 
 
 print('hey')

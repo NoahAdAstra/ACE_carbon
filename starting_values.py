@@ -37,4 +37,5 @@ filename_strength_panels_xy = 'XY_Ply'
 filename_stability_panels = '2D_3D'
 
 filename_stringer_stability = 'Axial_Stress'
+filename_strength_stringer = 'Axial_Strain'
 ######################################################################################################################
