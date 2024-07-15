@@ -99,14 +99,15 @@ sigma_crip_stringer = (sigma_crip_top*b_top*val.stringer_thikness*2 + sigma_crip
 
 #___BUCKling___
 
-E_hatt_z_top = ((A_matrix_stringer[0][0])*(((val.stringer_dim_1)**3)/12))
-E_hatt_z_bottom = (val.stringer_dim_2/D_matrix_invers[0][0]) 
-IE_z = E_hatt_z_top + E_hatt_z_bottom
 
 I_z_top = (val.stringer_thikness*(val.stringer_dim_1**3))/12
 I_z_bottom = (val.stringer_dim_2*(val.stringer_thikness**3))/12
 I_z = I_z_bottom + I_z_top
 A_stringer = val.stringer_thikness*val.stringer_dim_1 + val.stringer_dim_2*val.stringer_thikness
+
+E_hatt_z_top = ((A_matrix_stringer[0][0])*(((val.stringer_dim_1)**3)/12))
+E_hatt_z_bottom = (val.stringer_dim_2/D_matrix_invers[0][0]) 
+IE_z = E_hatt_z_top + E_hatt_z_bottom
 
 radius_of_gyr = ((I_z/A_stringer))**0.5
 c = 1 #don't know why (simply supported?)
@@ -132,6 +133,7 @@ for LoadCases in maindir_stringer_stability:
         specific_stringer.update({'lambda':lambda_euler})
         specific_stringer.update({'lambda_crit':lambda_crit})
         specific_stringer.update({'radius':radius_of_gyr})
+        specific_stringer.update({'IE_comb':IE_z})
 
 
 

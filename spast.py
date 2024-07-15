@@ -56,6 +56,7 @@ D_matrix_panel = [[3061521.95, 1696662.73, 508675.08],
 
 
 
+E_homo_panel = A_matrix_panel[0][0]/val.t_thikness
 
 #___setting up the databank___
 if __name__ == '__main__': 

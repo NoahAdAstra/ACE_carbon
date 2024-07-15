@@ -96,6 +96,34 @@ for LoadCases in  maindir_stringer_stability:
 
         row += 1
 
+column = 2
+row = 69
+# nice
+for LoadCases in  maindir_stringer_strength:
+    i = 0
+    for Panels,SpecificPly in maindir_stringer_strength[LoadCases].items():
+        ws.cell(row=row ,column=column).value = SpecificPly['E_homo_flange']
+        ws.cell(row=row ,column=column+1).value = SpecificPly['E_homo_web']
+        ws.cell(row=row ,column=column+2).value = SpecificPly['E_homo_panel']
+        ws.cell(row=row ,column=column+3).value = SpecificPly['E_homo_panel'] 
+        i += 1
+        row += 1
+        if row >= 73 : continue
+
+column = 7
+row = 69
+
+# nice
+for LoadCases in  maindir_stringer_stability:
+    i = 0
+    for Panels,SpecificPly in maindir_stringer_stability[LoadCases].items():
+        ws.cell(row=row ,column=column).value = SpecificPly['IE_comb']
+        ws.cell(row=row ,column=column+1).value = SpecificPly['radius']
+        ws.cell(row=row ,column=column+2).value = SpecificPly['lambda']
+        ws.cell(row=row ,column=column+3).value = SpecificPly['lambda_crit']
+        i += 1
+        row += 1
+        if row >= 73 : continue
 
 
 wb.save(f'{val.result_file}.xlsx')
