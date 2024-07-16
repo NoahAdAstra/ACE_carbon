@@ -1,28 +1,29 @@
 import os
 from openpyxl import load_workbook
+import starting_values as val
 
 os.chdir('../../')
 badir = os.getcwd()
-os.chdir('03_FemResults')
+os.chdir(f'{val.person}/Results')
 femdir = os.getcwd()
 
 import spast as pa_sta
 import stringer_stability as st_sta
 import panel_strength as pa_str
 import stringer_strength as st_str
-import starting_values as val
 
 maindir_stringer_stability = st_sta.maindir_stringer_stability
 maindir_stringer_strength = st_str.maindir_stringer_strength
 maindir_panel_stability = pa_sta.maindir_panel_stability
 maindir_panel_strength = pa_str.maindir_panel_strength
 
-A_matrix = st_sta.A_matrix_stringer
+A_matrix = val.A_matrix_stringer[val.person]
 B_matrix = st_sta.B_matrix_stringer
-D_matrix = st_sta.D_matrix_stringer
+D_matrix = val.D_matrix_stringer[val.person]
 
 
-os.chdir('../04_PyResults')
+
+os.chdir(f'../../{val.person}')
 badir = os.getcwd()
 file_path = os.path.join(badir, f'{val.result_file}.xlsx')
 wb = load_workbook(file_path)
@@ -97,33 +98,27 @@ for LoadCases in  maindir_stringer_stability:
         row += 1
 
 column = 2
-row = 69
-# nice
+
 for LoadCases in  maindir_stringer_strength:
-    i = 0
+    row = 69 # nice
     for Panels,SpecificPly in maindir_stringer_strength[LoadCases].items():
         ws.cell(row=row ,column=column).value = SpecificPly['E_homo_flange']
         ws.cell(row=row ,column=column+1).value = SpecificPly['E_homo_web']
         ws.cell(row=row ,column=column+2).value = SpecificPly['E_homo_panel']
         ws.cell(row=row ,column=column+3).value = SpecificPly['E_homo_panel'] 
-        i += 1
         row += 1
-        if row >= 73 : continue
+        
 
 column = 7
-row = 69
 
-# nice
-for LoadCases in  maindir_stringer_stability:
-    i = 0
+
+for LoadCases in  maindir_stringer_stability: 
+    row = 69 # nice
     for Panels,SpecificPly in maindir_stringer_stability[LoadCases].items():
         ws.cell(row=row ,column=column).value = SpecificPly['IE_comb']
         ws.cell(row=row ,column=column+1).value = SpecificPly['radius']
         ws.cell(row=row ,column=column+2).value = SpecificPly['lambda']
         ws.cell(row=row ,column=column+3).value = SpecificPly['lambda_crit']
-        i += 1
         row += 1
-        if row >= 73 : continue
-
 
 wb.save(f'{val.result_file}.xlsx')

@@ -6,15 +6,11 @@ import starting_values as val
 
 
 #########################################################################################
-A_matrix_stringer = [[172517.98,54088.62,0.00],
-                     [54088.62,172517.98,0.00],
-                     [0.00,0.00,59214.68]]
+A_matrix_stringer = val.A_matrix_stringer[val.person]
 
 B_matrix_stringer = [[0,0,0],[0,0,0],[0,0,0]]
 
-D_matrix_stringer = [[113389.70,62839.36,18839.82],
-                     [62839.36, 88269.94, 18839.82],
-                     [18839.82, 18839.82, 66541.71]]
+D_matrix_stringer = val.D_matrix_stringer[val.person]
 
 
 A_matrix_invers = np.linalg.inv(A_matrix_stringer) 

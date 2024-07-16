@@ -4,15 +4,11 @@ import os
 import starting_values as val
 
 #########################################################################################
-A_matrix_stringer = [[172517.98,54088.62,0.00],
-                     [54088.62,172517.98,0.00],
-                     [0.00,0.00,59214.68]]
+A_matrix_stringer = val.A_matrix_stringer[val.person]
 
 B_matrix_stringer = [[0,0,0],[0,0,0],[0,0,0]]
 
-D_matrix_stringer = [[113389.70,62839.36,18839.82],
-                     [62839.36, 88269.94, 18839.82],
-                     [18839.82, 18839.82, 66541.71]]
+D_matrix_stringer = val.D_matrix_stringer[val.person]
 
 
 A_matrix_invers = np.linalg.inv(A_matrix_stringer) 
@@ -20,15 +16,11 @@ A_matrix_invers = np.linalg.inv(A_matrix_stringer)
 D_matrix_invers = np.linalg.inv(D_matrix_stringer) 
 ###########################################################################################
 
-A_matrix_panel = [[517553.93, 162265.86, 0.00],
-                  [162265.86, 517553.93, 0.00],
-                  [0.00,	0.00,	177644.03]]
+A_matrix_panel = val.A_matrix_panel[val.person]
 
 B_matrix_panel = [[0,0,0],[0,0,0],[0,0,0]]
 
-D_matrix_panel = [[3061521.95, 1696662.73, 508675.08],
-                  [1696662.73, 2383288.51, 508675.08],
-                  [508675.08, 508675.08, 1796626.26]]
+D_matrix_panel = val.D_matrix_panel[val.person]
 
 
 
@@ -102,17 +94,17 @@ for LoadCases in maindir_stringer_strength:
         phi = SpecificPly['phi_d']
         epsilon_ply_x = (np.cos(phi)**2) * SpecificPly['epsilon_stringer']
         epsilon_ply_y = (np.sin(phi)**2) * SpecificPly['epsilon_stringer']
-        epsilon_ply_xy = -2*np.sin(phi)*np.cos(phi)
+        epsilon_ply_xy = -2*np.sin(phi)*np.cos(phi) * SpecificPly['epsilon_stringer']
         sigma_ply_x = (Q_11*epsilon_ply_x) + (Q_12*epsilon_ply_y)
         sigma_ply_y = (Q_12*epsilon_ply_x) + (Q_22*epsilon_ply_y)
-        tau_ply = Q_66*tau_ply
+        tau_ply = Q_66 * epsilon_ply_xy
         SpecificPly.update({'sigma_ply_x':sigma_ply_x})
         SpecificPly.update({'sigma_ply_y':sigma_ply_y})
         SpecificPly.update({'tau_ply':tau_ply})
 
 for LoadCases in maindir_stringer_strength:
     for Ply,SpecificPly in maindir_stringer_strength[LoadCases].items():
-        sigma_x = SpecificPly['sigma_ply']
+        sigma_x = SpecificPly['sigma_ply_x']
         if  sigma_x >= 0:
             RF_FF = 1/(sigma_x/val.R_paralel_t)
         else:
@@ -122,7 +114,7 @@ for LoadCases in maindir_stringer_strength:
         SpecificPly.update({'E_homo_flange':E_homo_top})
         SpecificPly.update({'E_homo_web':E_homo_bottom})
         SpecificPly.update({'E_homo_panel':E_homo_panel})
-        SpecificPly.update({'EI_combo':E_homo_panel})
+        SpecificPly.update({'EI_combo':' '})
 
 R_paralel_A = val.R_perpendicular_c/(2*(1+val.p_weird))
 tau_C = val.R_shear*((1+(2*val.p_weird))**0.5)
