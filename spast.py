@@ -132,6 +132,3 @@ for LoadCases in maindir_panel_stability:
 #___homogonize___
 
 
-
-
-print('hey')

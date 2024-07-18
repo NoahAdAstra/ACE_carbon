@@ -9,7 +9,6 @@ if __name__ == '__main__':
     os.chdir('../../03_FemResults')
 
 femdir = os.getcwd()
-print(os.getcwd())
 
 
 maindir_panel_strength= {} 
@@ -85,7 +84,7 @@ for LoadCases in maindir_panel_strength:
 
         if sigma_y < 0 and abs(sigma_y/tau) <= (R_paralel_A/abs(tau_C)):
             maindir_panel_strength[LoadCases][Ply].update({'mode':'B'})
-            RF_IFF = 1/((1/val.R_shear)*((((tau**2) + ((val.p_weird*sigma_y)**2))**2) + val.p_weird*sigma_y))
+            RF_IFF = 1/((1/val.R_shear)*((((tau**2) + ((val.p_weird*sigma_y)**2))**0.5) + val.p_weird*sigma_y))
 
 
         if sigma_y < 0 and abs(tau/sigma_y) <= (abs(tau_C)/R_paralel_A):
@@ -108,7 +107,6 @@ for LoadCases in maindir_panel_strength:
         maindir_panel_strength[LoadCases][Ply].update({'RF_comb':RF_comb})
 
         
-print()
 
 
 

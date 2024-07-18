@@ -132,5 +132,3 @@ for LoadCases in maindir_stringer_stability:
         specific_stringer.update({'IE_comb':IE_z})
 
 
-
-print('pups')

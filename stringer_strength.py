@@ -59,7 +59,6 @@ if __name__ == '__main__':
     os.chdir('../../03_FemResults')
 
 femdir = os.getcwd()
-print(os.getcwd())
 
 
 maindir_stringer_strength= {} 
@@ -150,4 +149,3 @@ for LoadCases in maindir_stringer_strength:
             RF_comb = RF_IFF
         maindir_stringer_strength[LoadCases][Ply].update({'RF_comb':RF_comb})
 
-print('helo')
