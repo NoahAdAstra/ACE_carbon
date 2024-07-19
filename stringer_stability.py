@@ -112,6 +112,18 @@ lambda_euler = (c * val.a_width) /radius_of_gyr
 E_average = IE_z/I_z
 lambda_crit = ((2*(np.pi**2)*E_average)/sigma_crip_stringer)**0.5
 
+E_hatt_x_top = (A_matrix_stringer[0][0])/val.stringer_thikness
+E_hatt_x_bottom = 1/((A_matrix_invers[0][0])*val.stringer_thikness)
+
+A_stringer_top = val.stringer_thikness*val.stringer_dim_1
+A_stringer_bottom = val.stringer_thikness*val.stringer_dim_2
+
+term_1 = (E_hatt_x_top*A_stringer_top*(val.stringer_thikness/2)) + (E_hatt_x_bottom*A_stringer_bottom*((val.stringer_dim_2/2)+val.stringer_thikness))
+term_2 = E_hatt_x_top*A_stringer_top + E_hatt_x_bottom*A_stringer_bottom
+
+z_EC = term_1/term_2
+
+
 if lambda_crit > lambda_euler :
     sigma_buckling = sigma_crip_stringer - ((1/E_average) * ((sigma_crip_stringer/(2*np.pi))**2) * (lambda_euler**2))
 else: print('error')
@@ -130,5 +142,5 @@ for LoadCases in maindir_stringer_stability:
         specific_stringer.update({'lambda_crit':lambda_crit})
         specific_stringer.update({'radius':radius_of_gyr})
         specific_stringer.update({'IE_comb':IE_z})
-
+        specific_stringer.update({'z_EC':z_EC})
 

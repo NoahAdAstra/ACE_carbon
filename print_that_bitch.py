@@ -99,14 +99,14 @@ for LoadCases in  maindir_stringer_stability:
 
 column = 2
 
-for LoadCases in  maindir_stringer_strength:
-    row = 69 # nice
-    for Panels,SpecificPly in maindir_stringer_strength[LoadCases].items():
-        ws.cell(row=row ,column=column).value = SpecificPly['E_homo_flange']
-        ws.cell(row=row ,column=column+1).value = SpecificPly['E_homo_web']
-        ws.cell(row=row ,column=column+2).value = SpecificPly['E_homo_panel']
-        ws.cell(row=row ,column=column+3).value = SpecificPly['E_homo_panel'] 
-        row += 1
+row = 69 # nice
+for i in range (0,4):
+    SpecificPly = maindir_stringer_strength['LC1']['Ply1']
+    ws.cell(row=row+i ,column=column).value = SpecificPly['E_homo_flange']
+    ws.cell(row=row+i ,column=column+1).value = SpecificPly['E_homo_web']
+    ws.cell(row=row+i ,column=column+2).value = SpecificPly['E_homo_panel']
+    ws.cell(row=row+i ,column=column+3).value = SpecificPly['E_homo_panel'] 
+    
         
 
 column = 7
@@ -115,6 +115,7 @@ column = 7
 for LoadCases in  maindir_stringer_stability: 
     row = 69 # nice
     for Panels,SpecificPly in maindir_stringer_stability[LoadCases].items():
+        ws.cell(row=row ,column=column-1).value = SpecificPly['z_EC']
         ws.cell(row=row ,column=column).value = SpecificPly['IE_comb']
         ws.cell(row=row ,column=column+1).value = SpecificPly['radius']
         ws.cell(row=row ,column=column+2).value = SpecificPly['lambda']
